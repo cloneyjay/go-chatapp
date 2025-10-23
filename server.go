@@ -175,20 +175,7 @@ func (c *Client) writePump() {
 				return
 			}
 
-			w, err := c.conn.NextWriter(websocket.TextMessage)
-			if err != nil {
-				return
-			}
-			w.Write(message)
-
-			// Add queued messages to the current WebSocket message
-			n := len(c.send)
-			for i := 0; i < n; i++ {
-				w.Write([]byte{'\n'})
-				w.Write(<-c.send)
-			}
-
-			if err := w.Close(); err != nil {
+			if err := c.conn.WriteMessage(websocket.TextMessage, message); err != nil {
 				return
 			}
 
@@ -239,6 +226,7 @@ func serveWs(hub *Hub, w http.ResponseWriter, r *http.Request) {
 	}
 
 	// Start goroutines for reading and writing
+	// writePump is started first to ensure the client is ready to receive messages
 	go client.writePump()
 	go client.readPump()
 }
