@@ -13,8 +13,14 @@ var addr = flag.String("addr", ":8080", "http service address")
 var upgrader = websocket.Upgrader{
 	ReadBufferSize:  1024,
 	WriteBufferSize: 1024,
+	// CheckOrigin allows all origins for demonstration purposes.
+	// In production, implement proper origin validation:
+	// CheckOrigin: func(r *http.Request) bool {
+	//     origin := r.Header.Get("Origin")
+	//     return origin == "https://yourdomain.com"
+	// }
 	CheckOrigin: func(r *http.Request) bool {
-		return true // Allow all origins for this example
+		return true
 	},
 }
 

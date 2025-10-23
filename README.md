@@ -23,7 +23,7 @@ The application consists of three main components:
 
 ### Prerequisites
 
-- Go 1.16 or higher
+- Go 1.19 or higher
 
 ### Installation
 
